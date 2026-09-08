@@ -2,11 +2,11 @@
 
 **Keep your Codex limits in view.**
 
-[![GNOME Shell 46](https://img.shields.io/badge/GNOME_Shell-46-4A86CF?logo=gnome&logoColor=white)](metadata.json)
+[![GNOME Shell 46 and 48–50](https://img.shields.io/badge/GNOME_Shell-46%2C_48--50-4A86CF?logo=gnome&logoColor=white)](metadata.json)
 [![Codex CLI 0.153.4 or newer](https://img.shields.io/badge/Codex_CLI-0.153.4%2B-2A9D8F)](#requirements)
 [![MIT license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
-See how much Codex quota you have left and when it resets, straight from your GNOME
+See how much Codex quota you've used and when it resets, straight from your GNOME
 panel. Open the popup for account activity and recent sessions, or head to preferences
 to choose what appears in Codex's native terminal footer.
 
@@ -36,7 +36,7 @@ All screenshots use synthetic demonstration data.
 
 ## Requirements
 
-- GNOME Shell **46**; later versions are not yet advertised or qualified.
+- GNOME Shell **46, 48, 49, or 50**. See [version checks and limits](docs/VALIDATION.md#gnome-compatibility) for the GNOME 47 test blocker.
 - Codex CLI **0.153.4 or newer**, signed in for account quota/activity data.
 - GJS, Libadwaita, GLib schema tools, and `gnome-extensions`.
 - Python 3 for test fixtures; Xvfb for the optional preferences test.
@@ -67,9 +67,9 @@ or `~/.codex`. Confirm edited connection paths with their checkmark.
 
 ## What it shows
 
-- **Panel:** remaining short-window and weekly percentages from the main Codex bucket.
+- **Panel:** used short-window and weekly percentages from the main Codex bucket, labeled **used**.
   A missing main window is omitted; model-specific windows stay separately named in Overview.
-- **Overview:** all returned quota windows, reset countdowns and local times, supplied
+- **Overview:** used percentages and filling usage bars for all returned quota windows, reset countdowns and local times, supplied
   credit balances, spending limits, and available reset-credit counts.
 - **Activity:** a local 24-hour quota chart, daily token activity, and available account
   summaries. Seven days of percentage samples are retained. Gaps are not zero usage.
@@ -82,10 +82,14 @@ Quotas refresh every minute by default, with backoff on failures. Activity is ca
 with their freshness state while the extension remains enabled. After re-enable, fresh
 account data identifies which saved history to load.
 
-Notifications at 25%, 10%, and 0% remaining can be toggled individually. The first snapshot
+Notifications at 75%, 90%, and 100% used can be toggled individually. The first snapshot
 sets a quiet baseline, and subsequent crossings notify once per reset window.
 
 ## Native Codex footer
+
+To enable the terminal footer, open the monitor's settings, select **Codex footer**,
+choose a preset, and click **Apply to Codex**. Then start a new Codex CLI session.
+Installing the extension or changing the sample preview doesn't apply the footer.
 
 The **Codex footer** preferences page provides 29 native fields, ordering controls,
 Focused/Balanced/Detailed presets, native theme colors, and sample-width previews.
@@ -100,7 +104,8 @@ Start a new Codex session if an existing terminal does not pick up the change.
 
 Standard Codex controls its footer rendering: theme colors are supported, while custom
 bars, reset countdowns, and multiple footer rows are not. The desktop display provides the
-richer information. Disabling the GNOME extension leaves the native footer configured;
+richer information. Its percentages show usage consumed; Codex's native quota footer
+fields still show usage remaining. Disabling the GNOME extension leaves the native footer configured;
 use Restore to undo its settings.
 
 ## Privacy and data availability
@@ -171,4 +176,5 @@ from my Claude tracker. See [NOTICE](NOTICE) for the upstream credits.
 
 ## License
 
-[MIT](LICENSE). Unofficial; not affiliated with or endorsed by OpenAI.
+[MIT](LICENSE) for the code; see [NOTICE](NOTICE) for logo ownership and upstream credits.
+Unofficial; not affiliated with or endorsed by OpenAI.

@@ -5,7 +5,7 @@
     <key name="codex-home" type="s"><default>''</default><summary>Codex configuration directory; empty uses the default</summary></key>
     <key name="refresh-interval" type="i"><range min="30" max="3600"/><default>60</default><summary>Quota refresh interval in seconds</summary></key>
     <key name="show-panel-icon" type="b"><default>true</default><summary>Show the panel icon</summary></key>
-    <key name="show-panel-usage" type="b"><default>true</default><summary>Show remaining quotas in the panel</summary></key>
+    <key name="show-panel-usage" type="b"><default>true</default><summary>Show used quotas in the panel</summary></key>
     <key name="panel-position" type="s"><choices><choice value="left"/><choice value="center"/><choice value="right"/></choices><default>'right'</default><summary>Panel position</summary></key>
     <key name="notify-warning" type="b"><default>true</default><summary>Notify when 75 percent of a window is used</summary></key>
     <key name="notify-critical" type="b"><default>true</default><summary>Notify when 90 percent of a window is used</summary></key>

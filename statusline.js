@@ -186,6 +186,7 @@ export class FooterManager {
         const snapshot = await this._snapshot();
         const tui = snapshot.effective.tui ?? {};
         return {
+            configured: Array.isArray(tui.status_line),
             fields: Array.isArray(tui.status_line) ? [...tui.status_line] : [...PRESETS.balanced],
             colors: typeof tui.status_line_use_colors === 'boolean' ? tui.status_line_use_colors : true,
             title: Array.isArray(tui.terminal_title) ? [...tui.terminal_title] : null,

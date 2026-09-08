@@ -1,6 +1,6 @@
-import Adw from 'gi://Adw';
+import Adw from 'gi://Adw?version=1';
 import Gio from 'gi://Gio';
-import Gtk from 'gi://Gtk';
+import Gtk from 'gi://Gtk?version=4.0';
 import {ExtensionPreferences} from 'resource:///org/gnome/Shell/Extensions/js/extensions/prefs.js';
 
 import {CodexClient} from './app-server.js';
@@ -49,8 +49,8 @@ export function buildPreferences(window, settings, {clientFactory = options => n
 
     const panel = new Adw.PreferencesGroup({title: 'Top bar'});
     panel.add(switchRow(settings, 'show-panel-icon', 'Show monitor icon'));
-    panel.add(switchRow(settings, 'show-panel-usage', 'Show remaining quota',
-        'Percentages in the top bar show the quota still available.'));
+    panel.add(switchRow(settings, 'show-panel-usage', 'Show quota used',
+        'Percentages in the top bar show the quota already consumed.'));
     const positions = ['left', 'center', 'right'];
     const position = choiceRow('Position', ['Left', 'Center', 'Right'],
         Math.max(0, positions.indexOf(settings.get_string('panel-position'))));
@@ -60,8 +60,8 @@ export function buildPreferences(window, settings, {clientFactory = options => n
 
     const alerts = new Adw.PreferencesGroup({title: 'Quota notifications',
         description: 'One notification per threshold in each reset window.'});
-    alerts.add(switchRow(settings, 'notify-warning', '25% remaining', 'Early warning before quota runs low'));
-    alerts.add(switchRow(settings, 'notify-critical', '10% remaining', 'Critical quota warning'));
+    alerts.add(switchRow(settings, 'notify-warning', '75% used', 'Early warning before quota runs low'));
+    alerts.add(switchRow(settings, 'notify-critical', '90% used', 'Critical quota warning'));
     alerts.add(switchRow(settings, 'notify-exhausted', 'Quota exhausted', 'Notify when no quota remains'));
     general.add(alerts);
     window.add(general);
@@ -269,10 +269,12 @@ class FooterEditor {
                 return;
             }
             this._setSnapshot(snapshot);
-            this._status.title = this._unsupported ? 'Choose a preset before applying' : 'Connected to Codex';
+            this._status.title = this._unsupported ? 'Choose a preset before applying'
+                : snapshot.configured ? 'Connected to Codex' : 'Footer not configured';
             this._status.subtitle = this._unsupported
                 ? 'Your current footer includes fields outside this catalogue. Choose a preset to replace them.'
-                : `CLI ${clean(client.version ?? 'version unavailable')} · ${clean(home)}${snapshot.theme ? ` · Theme: ${clean(snapshot.theme)}` : ''}`;
+                : !snapshot.configured ? 'The preview is not active. Choose Apply to Codex to enable this footer.'
+                    : `CLI ${clean(client.version ?? 'version unavailable')} · ${clean(home)}${snapshot.theme ? ` · Theme: ${clean(snapshot.theme)}` : ''}`;
         } catch (error) {
             if (!this._closed && generation === this._generation) {
                 this._status.title = 'Could not read Codex configuration';

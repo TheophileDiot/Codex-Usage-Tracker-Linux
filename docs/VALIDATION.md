@@ -1,6 +1,46 @@
 # Validation evidence
 
-Verified on 2026-09-08 with Codex CLI 0.153.4, GNOME Shell 46, and GJS 1.80.2.
+Verified on 2026-09-08. The original native Codex checks used CLI 0.153.4,
+GNOME Shell 46.0, and GJS 1.80.2 on Ubuntu 24.04. Additional desktop checks are below.
+
+## GNOME compatibility
+
+Offline assertions, package installation, headless desktop interaction, and preferences
+checks passed on:
+
+- GNOME 46.0 on Ubuntu 24.04.
+- GNOME 48.8 on Fedora 42.
+- GNOME 49.9 on Fedora 43.
+- GNOME 50.4 on Fedora 44.
+
+Each desktop run checks keyboard navigation, quota geometry at 1x and 2x scale,
+light-theme foreground, notifications, and disable/re-enable cleanup. The quota checks
+verify that 34% used appears as 34% and fills 34% of the track. Empty and exhausted quotas
+produce empty and full bars. Preferences tests
+verify the unconfigured-footer message and require Apply before any settings write.
+
+The Fedora checks copy read-only source into a temporary container workspace. They use
+synthetic Codex responses and private D-Bus sessions, with no network, host desktop
+socket, or Codex credentials. Reproduce them with Docker:
+
+```sh
+make test-compat FEDORA=42
+make test-compat FEDORA=43
+make test-compat FEDORA=44
+```
+
+The image build downloads Fedora packages; the test container itself has no network.
+These are headless software-rendering checks, not qualification of every GPU or display.
+
+GNOME 47 remains unqualified and is omitted from the metadata. The Fedora 41/GNOME 47.10
+compositor exits with SIGSEGV, including a control run with this extension disabled.
+A normal user account produced the same failure. GNOME 51 and later remain untested.
+
+The runtime uses the newer `orientation` property when available and the GNOME 46
+`vertical` fallback otherwise. Preferences specify GTK 4 and Libadwaita 1; shared data
+modules don't import either UI toolkit. Objects, signal handlers, timers, and the owned
+Codex subprocess are cleaned up on disable. The package omits the numeric `version`
+field so extensions.gnome.org can assign it, and retains `version-name` for source releases.
 
 ## Automated and native checks
 
@@ -16,7 +56,7 @@ Verified on 2026-09-08 with Codex CLI 0.153.4, GNOME Shell 46, and GJS 1.80.2.
 - The packaged extension was installed in a private headless GNOME session. Synthetic
   data populated all three tabs. Keyboard arrow navigation, completed-but-unavailable
   billing, and disable/re-enable passed.
-- Measured quota fills were 66%, 38%, and 82% of their tracks. At 2x St scaling the
+- Measured quota fills were 34%, 62%, and 18% of their tracks. At 2x St scaling the
   track height doubled and the percentages remained proportional. The light preference
   retained the shell's foreground opacity. This is actor-scale verification, not a claim
   of qualification on every physical HiDPI monitor.
@@ -43,7 +83,7 @@ unbounded detail requests, preferences restarting after closure, overlapping res
 journals, and the completed-but-unavailable billing state. Focused regression tests cover
 these cases; the final bounded re-review had no remaining concrete findings.
 
-GNOME 47 and later, other distributions, and other account/billing plans remain unqualified.
+Other distributions and account/billing plans remain unqualified beyond the checks above.
 The GNOME 46 test environment emits an upstream GJS warning when GI wraps a subprocess
 pipe as the relocated `Gio.UnixOutputStream` type; transport and cleanup tests pass. Isolated
 desktop startup also logs unavailable optional portal/session services. These are distinct
@@ -54,6 +94,10 @@ stock footer fields and does not modify the Codex binary.
 
 ## References
 
+- [GNOME extension review guidelines](https://gjs.guide/extensions/review-guidelines/review-guidelines.html)
+- [GNOME extension best practices](https://gjs.guide/extensions/review-guidelines/best-practices.html)
+- [GNOME 48 layout API changes](https://gjs.guide/extensions/upgrading/gnome-shell-48.html#st-widgets-orientation)
+- [GNOME 50 porting guide](https://gjs.guide/extensions/upgrading/gnome-shell-50.html)
 - [Codex app-server protocol](https://developers.openai.com/codex/app-server/)
 - [Footer fields at 0.153.4](https://github.com/openai/codex/blob/rust-v0.153.4/codex-rs/tui/src/bottom_pane/status_line_setup.rs)
 - [Native theme styling](https://github.com/openai/codex/blob/rust-v0.153.4/codex-rs/tui/src/bottom_pane/status_line_style.rs)

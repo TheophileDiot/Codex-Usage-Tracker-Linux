@@ -2,7 +2,7 @@
 
 ## Project Structure & Module Organization
 
-This GNOME Shell 46 extension uses JavaScript ES modules through GJS. Root modules divide responsibilities: `extension.js` renders the panel and popup; `prefs.js` builds Libadwaita preferences; `app-server.js` handles Codex subprocess transport; `monitor.js` coordinates refreshes; `usage.js`, `history.js`, and `files.js` handle normalization, history, and storage; `statusline.js` manages native footer settings.
+This GNOME Shell extension uses JavaScript ES modules through GJS. Supported versions and runtime evidence are recorded in `metadata.json` and `docs/VALIDATION.md`. Root modules divide responsibilities: `extension.js` renders the panel and popup; `prefs.js` builds Libadwaita preferences; `app-server.js` handles Codex subprocess transport; `monitor.js` coordinates refreshes; `usage.js`, `history.js`, and `files.js` handle normalization, history, and storage; `statusline.js` manages native footer settings.
 
 Keep GSettings XML in `schemas/`, assertions and Python fixtures in `tests/`, and screenshots in `docs/images/`. UI assets include `stylesheet.css` and `codex-usage-symbolic.svg`. Read `PRODUCT.md`, `DESIGN.md`, and `docs/VALIDATION.md` before changing behavior or presentation.
 

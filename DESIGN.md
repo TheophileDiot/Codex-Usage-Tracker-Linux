@@ -4,13 +4,13 @@ An original compact GNOME monitor with system typography and native popup surfac
 Use a restrained teal accent; amber and red indicate pressure. Text inherits the active
 theme foreground rather than relying on colored percentages to communicate meaning.
 
-The panel uses an original symbolic gauge and concise main-bucket remaining percentages.
+The panel uses the monochrome ChatGPT/OpenAI Blossom mark and concise main-bucket used percentages.
 The popup is approximately 400 logical pixels wide and constrains its scrollable content
 to the monitor height. Its fixed header identifies Codex/account and provides Refresh and
 Preferences. Keyboard-accessible Overview, Activity, and Sessions tabs separate distinct
 questions instead of presenting one long dashboard.
 
-Overview emphasizes large remaining percentages, slim allowance meters, bucket labels,
+Overview emphasizes large used percentages, slim usage meters that fill as consumption rises, bucket labels,
 and explicit reset times. Secondary credit details stay compact. Activity labels the
 source, scale, and gaps of its charts. Session rows use saved titles/project/model/effort
 and last-update times, with optional usage details disclosed on selection.

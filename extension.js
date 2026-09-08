@@ -28,8 +28,10 @@ function label(text = '', style = '', wrap = false) {
     return actor;
 }
 
-function column(style = '') {
-    return new St.BoxLayout({vertical: true, style_class: style, x_expand: true});
+function column(style = '', properties = {}) {
+    const direction = 'orientation' in St.BoxLayout.prototype
+        ? {orientation: Clutter.Orientation.VERTICAL} : {vertical: true};
+    return new St.BoxLayout({...direction, style_class: style, x_expand: true, ...properties});
 }
 
 function iconButton(name, title) {
@@ -49,9 +51,9 @@ function dateLabel(seconds) {
 
 const QuotaProgress = GObject.registerClass(
 class QuotaProgress extends St.Widget {
-    _init(remaining, used) {
+    _init(used) {
         super._init({style_class: 'cum-track', x_expand: true});
-        this._fraction = Math.max(0, Math.min(100, remaining)) / 100;
+        this._fraction = Math.max(0, Math.min(100, used)) / 100;
         this.add_child(new St.Widget({style_class: `cum-fill cum-${quotaColor(used)}`}));
     }
 
@@ -121,7 +123,7 @@ class CodexIndicator extends PanelMenu.Button {
 
     _buildPanel() {
         const box = new St.BoxLayout({style_class: 'panel-status-menu-box cum-panel'});
-        this._panelIcon = new St.Icon({gicon: this._icon, style_class: 'system-status-icon'});
+        this._panelIcon = new St.Icon({gicon: this._icon, icon_size: 24, style_class: 'system-status-icon'});
         this._panelLabel = label('—', 'cum-panel-label');
         this._panelLabel.y_align = Clutter.ActorAlign.CENTER;
         box.add_child(this._panelIcon);
@@ -286,13 +288,13 @@ class CodexIndicator extends PanelMenu.Button {
     _updatePanel() {
         const windows = (this._state?.quota?.windows ?? []).filter(window => window.bucketId === 'codex');
         const preferred = [300, 10080].map(duration => windows.find(window => window.durationMinutes === duration)).filter(Boolean);
-        const values = preferred.map(window => `${window.durationMinutes === 300 ? '5h' : '7d'} ${Math.round(window.remainingPercent)}%`);
+        const values = preferred.map(window => `${window.durationMinutes === 300 ? '5h' : '7d'} ${Math.round(window.usedPercent)}%`);
         const stale = Boolean(this._state?.quotaError) || this._state?.connection === 'error';
-        this._panelLabel.text = `${values.join('  ') || '—'}${stale ? ' !' : ''}`;
+        this._panelLabel.text = `${values.length ? `${values.join('  ')} used` : '—'}${stale ? ' !' : ''}`;
         const showUsage = this._settings.get_boolean('show-panel-usage');
         this._panelLabel.visible = showUsage;
         this._panelIcon.visible = this._settings.get_boolean('show-panel-icon') || !showUsage;
-        this.accessible_name = clean(`Codex Usage Monitor. ${values.length ? `${values.join(', ')} remaining.` : 'Quota unavailable.'}${stale ? ' Showing stale data.' : ''}`);
+        this.accessible_name = clean(`Codex Usage Monitor. ${values.length ? `${values.join(', ')} used.` : 'Quota unavailable.'}${stale ? ' Showing stale data.' : ''}`);
     }
 
     _selectTab(index) {
@@ -394,13 +396,13 @@ class CodexIndicator extends PanelMenu.Button {
         parent.add_child(reset);
     }
 
-    _progress(remaining, used, parent) {
-        parent.add_child(new QuotaProgress(remaining, used));
+    _progress(used, parent) {
+        parent.add_child(new QuotaProgress(used));
     }
 
     _overview() {
         const state = this._state;
-        this._section('Remaining allowance', state.quotaAt, state.quotaError);
+        this._section('Quota used', state.quotaAt, state.quotaError);
         if (!state.quota) {
             const noAccount = state.account?.kind === 'none';
             const unsupported = state.account && !state.account.eligible && !noAccount;
@@ -417,12 +419,12 @@ class CodexIndicator extends PanelMenu.Button {
             identity.add_child(label(window.label, 'cum-quota-title'));
             identity.add_child(label(window.bucketName || window.bucketId || 'Account allowance', 'cum-caption'));
             heading.add_child(identity);
-            const amount = label(`${Math.round(window.remainingPercent)}%`, 'cum-quota-number');
+            const amount = label(`${Math.round(window.usedPercent)}%`, 'cum-quota-number');
             amount.x_expand = false;
-            amount.accessible_name = `${clean(window.label)}: ${Math.round(window.remainingPercent)} percent remaining`;
+            amount.accessible_name = `${clean(window.label)}: ${Math.round(window.usedPercent)} percent used`;
             heading.add_child(amount);
             card.add_child(heading);
-            this._progress(window.remainingPercent, window.usedPercent, card);
+            this._progress(window.usedPercent, card);
             this._reset(window.resetsAt, card);
             this._page.add_child(card);
         }
@@ -431,8 +433,9 @@ class CodexIndicator extends PanelMenu.Button {
             card.add_child(label(limit.label, 'cum-quota-title', true));
             this._detailRow('Used / limit', `${limit.used ?? '—'} / ${limit.limit ?? '—'}`, card);
             if (limit.remainingPercent !== null && limit.remainingPercent !== undefined) {
-                this._detailRow('Remaining', `${Math.round(limit.remainingPercent)}%`, card);
-                this._progress(limit.remainingPercent, 100 - limit.remainingPercent, card);
+                const usedPercent = 100 - limit.remainingPercent;
+                this._detailRow('Used', `${Math.round(usedPercent)}%`, card);
+                this._progress(usedPercent, card);
             }
             this._reset(limit.resetsAt, card);
             this._page.add_child(card);
@@ -460,7 +463,7 @@ class CodexIndicator extends PanelMenu.Button {
         const maximum = percent ? 100 : Math.max(1, ...available);
         chart.accessible_name = clean(captions.join(', '), 2000);
         values.forEach((value, index) => {
-            const slot = new St.BoxLayout({vertical: true, x_expand: true, y_align: Clutter.ActorAlign.END});
+            const slot = column('', {y_align: Clutter.ActorAlign.END});
             slot.accessible_name = clean(captions[index]);
             const bar = new St.Widget({
                 style_class: `cum-chart-bar ${value === null ? 'cum-chart-missing' : percent ? `cum-${quotaColor(value)}` : 'cum-healthy'}`,
@@ -620,7 +623,7 @@ class CodexIndicator extends PanelMenu.Button {
                 const transition = notificationTransition(record[window.id], window, thresholds);
                 next[window.id] = transition.state;
                 if (!first && transition.threshold)
-                    alerts.push(`${window.label}: ${Math.round(window.remainingPercent)}% remaining${window.bucketName ? ` · ${window.bucketName}` : ''}.`);
+                    alerts.push(`${window.label}: ${Math.round(window.usedPercent)}% used${window.bucketName ? ` · ${window.bucketName}` : ''}.`);
             }
             if (JSON.stringify(next) !== JSON.stringify(record))
                 await writeJson(path, next, this._io);
@@ -654,7 +657,7 @@ class CodexIndicator extends PanelMenu.Button {
 
     _stopCountdown() {
         if (this._countdownId)
-            GLib.source_remove(this._countdownId);
+            GLib.Source.remove(this._countdownId);
         this._countdownId = 0;
     }
 

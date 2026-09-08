@@ -1,7 +1,8 @@
 UUID := codex-usage-monitor@theophilediot.github.io
 RUNTIME := app-server.js files.js usage.js history.js monitor.js statusline.js codex-usage-symbolic.svg LICENSE NOTICE
+FEDORA ?= 44
 
-.PHONY: test test-native test-shell test-prefs pack
+.PHONY: test test-native test-shell test-prefs test-compat pack
 test:
 	gjs -m tests/test-usage.js
 	gjs -m tests/test-history.js
@@ -26,5 +27,11 @@ test-shell: pack
 
 test-prefs: test
 	GSETTINGS_BACKEND=memory GDK_BACKEND=x11 GSK_RENDERER=cairo \
-		GI_TYPELIB_PATH=/usr/lib/gnome-shell/girepository-1.0 \
-		LD_LIBRARY_PATH=/usr/lib/gnome-shell xvfb-run -a gjs -m tests/test-prefs.js
+		GI_TYPELIB_PATH=/usr/lib/gnome-shell/girepository-1.0:/usr/lib64/gnome-shell/girepository-1.0 \
+		LD_LIBRARY_PATH=/usr/lib/gnome-shell:/usr/lib64/gnome-shell xvfb-run -a gjs -m tests/test-prefs.js
+
+test-compat:
+	docker build --build-arg FEDORA=$(FEDORA) -f tests/Containerfile -t codex-monitor-gnome:fedora$(FEDORA) tests
+	docker run --rm --network none --cap-drop ALL --security-opt no-new-privileges \
+		--tmpfs /work:exec,mode=1777 --mount "type=bind,src=$(CURDIR),dst=/src,readonly" \
+		codex-monitor-gnome:fedora$(FEDORA) python3 /src/tests/test-container.py

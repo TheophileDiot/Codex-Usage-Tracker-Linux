@@ -4,7 +4,6 @@
   "uuid": "codex-usage-monitor@theophilediot.github.io",
   "settings-schema": "org.gnome.shell.extensions.codex-usage-monitor",
   "url": "https://github.com/TheophileDiot/Codex-Usage-Tracker-Linux",
-  "version": 1,
   "version-name": "0.1.0",
-  "shell-version": ["46"]
+  "shell-version": ["46", "48", "49", "50"]
 }

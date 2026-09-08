@@ -17,4 +17,9 @@ Codex protocol and native footer identifiers are documented by OpenAI:
 https://github.com/openai/codex
 Codex itself is not bundled or modified. It is installed separately by the user.
 
+The panel's OpenAI Blossom icon identifies the monitored OpenAI service. It is
+an unmodified asset from https://cdn.openai.com/brand/OpenAI-Logos-2025.zip.
+The OpenAI and ChatGPT marks belong to OpenAI and are subject to its brand usage
+terms (https://openai.com/brand/), not this project's MIT license.
+
 This project is unofficial and is not affiliated with or endorsed by OpenAI.

@@ -45,6 +45,7 @@ try {
     while (editor._busy) {assert(Date.now() < deadline, 'UI connection timeout'); await wait(10);}
     assert(editor._manager, editor._status.subtitle);
     assert(writes === 0 && editor._rows.length === 29, 'construct 29 fields without changing configuration');
+    assert(editor._status.title === 'Footer not configured', 'A sample preview must not imply the footer is installed');
     editor._preset.selected = 3;
     assert(JSON.stringify(editor._fields) === JSON.stringify(PRESETS.detailed), 'Detailed preset');
     editor._rows[0].active = false;
@@ -60,12 +61,12 @@ try {
     const style = Adw.StyleManager.get_default();
     style.color_scheme = Adw.ColorScheme.FORCE_LIGHT;
     await wait(150);
-    const light = editor._sample.get_style_context().get_color();
-    const lightBase = window.get_style_context().get_color().to_string();
+    const light = editor._sample.get_color();
+    const lightBase = window.get_color().to_string();
     style.color_scheme = Adw.ColorScheme.FORCE_DARK;
     await wait(150);
-    const dark = editor._sample.get_style_context().get_color();
-    const darkBase = window.get_style_context().get_color().to_string();
+    const dark = editor._sample.get_color();
+    const darkBase = window.get_color().to_string();
     assert(light.red < dark.red && light.to_string() === lightBase && dark.to_string() === darkBase, 'native light/dark foreground adapts');
     window.close();
     assert(stopped === 1, 'preferences client stops on close');

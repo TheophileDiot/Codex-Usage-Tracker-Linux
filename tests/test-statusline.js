@@ -164,7 +164,10 @@ try {
     await rejects(() => manager(invalid).apply(selection), 'read');
     assert(invalid.writes().length === 0, 'Invalid config is never overwritten');
     const absent = new Server();
-    await manager(absent).apply({fields: [], colors: false});
+    const absentFooter = manager(absent);
+    assert((await absentFooter.read()).configured === false, 'An absent footer must be identified as unconfigured');
+    await absentFooter.apply({fields: [], colors: false});
+    assert((await absentFooter.read()).configured === true, 'An explicitly empty footer is configured, not missing');
     equal(absent.config.tui.status_line, [], 'Empty native footer is supported');
     const missing = new Server();
     missing.missing = true;

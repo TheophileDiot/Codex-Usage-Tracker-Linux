@@ -2,13 +2,14 @@
 
 Codex Usage Monitor is an independent GNOME desktop companion for a local Codex CLI user.
 It shows quota pressure, resets, account activity, and recent session records, and configures
-Codex's native footer. Its interface and identity are original; selected tested GNOME and
+Codex's native footer. Its interface is original; selected tested GNOME and
 history foundations come from the author's Claude tracker under MIT.
 
 ## Platform and integration
 
-- GNOME Shell 46 is the supported initial desktop. Later versions require a runtime smoke
-  test before being advertised in metadata.
+- GNOME Shell 46 and 48–50 are supported. Each additional major version requires a runtime
+  smoke test before being advertised in metadata. GNOME 47 qualification is blocked by
+  a compositor crash in the test environment; see `docs/VALIDATION.md`.
 - Codex CLI 0.153.4 or newer, GJS ES modules, Libadwaita preferences, and native GNOME APIs.
 - A private stdio connection to the user's installed Codex app-server supplies data.
   The monitor creates no conversations, runs no inference, and never requests exported
@@ -18,8 +19,9 @@ history foundations come from the author's Claude tracker under MIT.
 
 ## Information and truth boundaries
 
-- The panel shows remaining 5-hour and weekly quotas only from the main `codex` bucket,
-  matching the native CLI. Missing main windows are omitted. The popup names all additional
+- The panel shows used 5-hour and weekly quotas only from the main `codex` bucket,
+  labeled as quota used. Overview emphasizes the used percentage and fills bars as usage grows.
+  Missing main windows are omitted. The popup names all additional
   buckets and uses actual window durations.
 - Overview shows percentages, reset countdowns and local clock times, spending controls,
   supplied credit balances, and available reset-credit counts. All are informational.
@@ -55,6 +57,10 @@ cancels its requests, timers, streams, and owned process.
 Preferences exposes the 29 native fields verified in Codex 0.153.4, ordered selection,
 Focused/Balanced/Detailed presets, native theme colors, and an optional terminal title.
 Sample previews explain truncation; the actual TUI owns rendering and data availability.
+Native Codex quota fields show remaining usage; their previews retain that meaning even
+though the desktop shows consumed usage.
+An absent native footer setting is labeled as unconfigured; displaying a preview does not
+enable it in Codex. The user must select Apply to Codex.
 
 Apply and Restore use versioned Codex config edits. They preserve unrelated keys and
 original managed values, journal interrupted changes, and retain subsequent user edits.

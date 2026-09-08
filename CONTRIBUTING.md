@@ -10,8 +10,9 @@ use Wayland or X11. Name the extension version or commit you tested, then give t
 to reproduce the problem, what you expected, and what happened.
 
 If the problem concerns quotas or billing, distinguish a missing value from a zero.
-The data available depends on your account and the Codex backend. GNOME 46 is the
-currently qualified version; reports from later versions help establish compatibility.
+The data available depends on your account and the Codex backend. Supported GNOME
+versions are 46 and 48–50; see the [compatibility evidence](docs/VALIDATION.md#gnome-compatibility)
+before adding another version to the metadata.
 
 Share only the log lines needed to show the problem. Remove credentials, account
 identifiers, private paths, session titles, and prompt content from logs and screenshots.
