@@ -1,6 +1,6 @@
 {
   "name": "Codex Usage Monitor",
-  "description": "Account quotas, reset times, activity and recent sessions for Codex, with native CLI statusline configuration. Uses your installed Codex CLI and existing login. Unofficial; not affiliated with OpenAI.",
+  "description": "Keep your Codex limits in view. Track quotas, reset times, activity and recent sessions from your GNOME panel, and configure Codex's native terminal footer. Uses your installed Codex CLI and existing login. Unofficial; not affiliated with OpenAI.",
   "uuid": "codex-usage-monitor@theophilediot.github.io",
   "settings-schema": "org.gnome.shell.extensions.codex-usage-monitor",
   "url": "https://github.com/TheophileDiot/Codex-Usage-Tracker-Linux",

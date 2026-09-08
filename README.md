@@ -1,13 +1,38 @@
 # Codex Usage Monitor
 
-A GNOME companion for Codex: account quotas, reset times, activity, and recent sessions
-in your desktop panel, with an editor for Codex's native terminal footer.
+**Keep your Codex limits in view.**
+
+[![GNOME Shell 46](https://img.shields.io/badge/GNOME_Shell-46-4A86CF?logo=gnome&logoColor=white)](metadata.json)
+[![Codex CLI 0.153.4 or newer](https://img.shields.io/badge/Codex_CLI-0.153.4%2B-2A9D8F)](#requirements)
+[![MIT license](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
+See how much Codex quota you have left and when it resets, straight from your GNOME
+panel. Open the popup for account activity and recent sessions, or head to preferences
+to choose what appears in Codex's native terminal footer.
+
+Use your installed Codex CLI and its existing login. There's no API key to paste into
+the extension.
+
+[Install](#build-and-install) · [Features](#what-it-shows) ·
+[Codex footer](#native-codex-footer) · [Contributing](CONTRIBUTING.md) ·
+[Report a bug](https://github.com/TheophileDiot/Codex-Usage-Tracker-Linux/issues/new?template=bug_report.md)
 
 ![Codex Usage Monitor with synthetic demonstration data](docs/images/overview.png)
 
-The interface is original. Selected history, notification, and GNOME foundations come
-from [Claude Usage Tracker for Linux](https://github.com/TheophileDiot/Claude-Usage-Tracker-Linux).
-See [NOTICE](NOTICE) for attribution.
+<details>
+<summary>More screenshots: activity and recent sessions</summary>
+
+### Activity
+
+![Activity view with synthetic local quota history](docs/images/activity.png)
+
+### Recent sessions
+
+![Recent sessions with synthetic project and model details](docs/images/sessions.png)
+
+</details>
+
+All screenshots use synthetic demonstration data.
 
 ## Requirements
 
@@ -127,4 +152,23 @@ The probe prints data availability and quota figures, without credentials or pro
 See [validation evidence](docs/VALIDATION.md), [product behavior](PRODUCT.md), and
 [design direction](DESIGN.md).
 
-Unofficial; not affiliated with or endorsed by OpenAI. MIT license.
+## Contributing
+
+Bug reports, small fixes, and screenshots from other GNOME versions are welcome.
+For a feature request, describe what you're trying to do and where the current UI gets
+in your way. See [CONTRIBUTING.md](CONTRIBUTING.md) for checks and reporting details.
+Please use the [security reporting instructions](SECURITY.md) for vulnerabilities.
+
+## Related projects and credits
+
+If you also use Claude Code, see
+[Claude Usage Tracker for Linux](https://github.com/TheophileDiot/Claude-Usage-Tracker-Linux).
+For a self-hosted Grafana view across coding tools, see
+[AI CLI Observability](https://github.com/TheophileDiot/ai-cli-observability).
+
+The interface is original. I adapted selected history, notification, and GNOME foundations
+from my Claude tracker. See [NOTICE](NOTICE) for the upstream credits.
+
+## License
+
+[MIT](LICENSE). Unofficial; not affiliated with or endorsed by OpenAI.
