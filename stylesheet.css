@@ -1,0 +1,44 @@
+/* Inherit the shell's typeface, foreground and popup surface in light/dark themes. */
+.cum-root { padding: 0; }
+.cum-content { width: 376px; padding: 12px; spacing: 14px; }
+.cum-header { spacing: 6px; }
+.cum-identity { spacing: 3px; }
+.cum-title { font-size: 20px; font-weight: 800; }
+.cum-caption { font-size: 11px; font-weight: 400; opacity: 0.72; }
+.cum-icon-button { padding: 9px; border-radius: 10px; }
+.cum-icon-button:hover, .cum-icon-button:focus { background-color: rgba(70, 160, 150, 0.18); }
+.cum-icon-button:focus, .cum-tab:focus, .cum-session:focus { box-shadow: inset 0 0 0 2px #268b82; }
+.cum-tabs { spacing: 3px; border-radius: 12px; padding: 3px; background-color: rgba(110, 130, 130, 0.12); }
+.cum-tab { padding: 8px 10px; font-size: 11px; font-weight: 600; border-radius: 9px; }
+.cum-tab:hover { background-color: rgba(70, 160, 150, 0.13); }
+.cum-tab:checked { background-color: rgba(38, 139, 130, 0.24); }
+.cum-scroll { max-height: 440px; }
+.cum-page { spacing: 11px; padding-right: 3px; }
+.cum-section-heading { spacing: 8px; padding: 2px 0; }
+.cum-section-title { font-size: 11px; font-weight: 700; }
+.cum-quota-card { spacing: 10px; padding: 12px; border-radius: 14px; background-color: rgba(70, 160, 150, 0.065); border: 1px solid rgba(70, 140, 130, 0.23); }
+.cum-quota-heading { spacing: 12px; }
+.cum-quota-identity { spacing: 5px; }
+.cum-quota-title { font-size: 12px; font-weight: 650; }
+.cum-quota-number { font-size: 30px; font-weight: 800; }
+.cum-track { height: 5px; background-color: rgba(110, 130, 130, 0.22); border-radius: 5px; }
+.cum-fill { border-radius: 5px; }
+.cum-healthy { background-color: #268b82; }
+.cum-warning { background-color: #c78b28; }
+.cum-critical { background-color: #d45b57; }
+.cum-card { padding: 11px 12px; spacing: 9px; border-radius: 12px; border: 1px solid rgba(110, 130, 130, 0.2); }
+.cum-detail-row { spacing: 8px; }
+.cum-detail-value { max-width: 200px; font-size: 10px; font-weight: 600; }
+.cum-chart { height: 48px; spacing: 3px; }
+.cum-chart-bar { min-width: 3px; border-radius: 2px 2px 0 0; }
+.cum-chart-missing { background-color: rgba(110, 130, 130, 0.3); }
+.cum-empty { spacing: 7px; padding: 20px 8px; }
+.cum-error { padding: 9px; border-radius: 8px; font-size: 11px; background-color: rgba(199, 139, 40, 0.15); border-left: 3px solid #c78b28; }
+.cum-session { padding: 11px; border-radius: 11px; border: 1px solid rgba(110, 130, 130, 0.2); }
+.cum-session:hover { background-color: rgba(70, 160, 150, 0.10); }
+.cum-session-selected { background-color: rgba(70, 160, 150, 0.14); border-color: rgba(38, 139, 130, 0.55); }
+.cum-session-body { spacing: 5px; }
+.cum-session-detail { padding: 4px 11px 10px; spacing: 8px; border-left: 2px solid #268b82; }
+.cum-footer { font-size: 10px; opacity: 0.55; }
+.cum-panel { spacing: 7px; }
+.cum-panel-label { font-size: 12px; font-weight: 600; }

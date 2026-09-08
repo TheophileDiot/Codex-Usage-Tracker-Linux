@@ -1,0 +1,20 @@
+Codex Usage Monitor
+Copyright (c) 2026 Théophile Diot
+
+This is an independent GNOME application with an original interface.
+
+History sampling, notification state transitions, and asynchronous GNOME I/O
+foundations are adapted from Claude Usage Tracker for Linux by Théophile Diot:
+https://github.com/TheophileDiot/Claude-Usage-Tracker-Linux
+
+That project's foundations include Claude Usage Tracker by its contributors
+(https://github.com/hamed-elfayome/Claude-Usage-Tracker) and Claude Code Usage
+by Baptiste-Pasquier (https://github.com/Haletran/claude-usage-extension).
+Their applicable MIT copyright notices and permission terms remain in LICENSE.
+This project does not reuse their branding, icon, or Claude statusline renderer.
+
+Codex protocol and native footer identifiers are documented by OpenAI:
+https://github.com/openai/codex
+Codex itself is not bundled or modified. It is installed separately by the user.
+
+This project is unofficial and is not affiliated with or endorsed by OpenAI.

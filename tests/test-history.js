@@ -1,0 +1,21 @@
+function assert(ok, message) { if (!ok) throw new Error(message); }
+const module = await import('../history.js').catch(() => ({}));
+assert(typeof module.addHistorySample === 'function', 'History sampling is implemented');
+const {addHistorySample,sanitizeHistory,hourlySeries,notificationTransition} = module;
+const now = Date.now();
+const quota = {id:'codex:primary:300',usedPercent:25,resetsAt:2000000000};
+const first = addHistorySample(null,[quota],now);
+assert(first.changed && first.history.samples.length === 1, 'first sample');
+assert(!addHistorySample(first.history,[quota],now+100).changed, 'five minute downsampling');
+const next = addHistorySample(first.history,[{...quota,usedPercent:0}],now+300000);
+assert(next.changed && hourlySeries(next.history,quota.id,now+300000).at(-1) === 0, 'latest sample wins including zero');
+assert(sanitizeHistory({samples:[{at:now-8*86400000,metrics:{x:20}},{at:now+1,metrics:{x:20}}]},now).samples.length === 0, 'retention rejects stale/future');
+const absent = hourlySeries(null,'x',now);
+assert(absent.length === 24 && absent.every(x=>x===null), 'gaps never shown as zero');
+let result = notificationTransition(null,{...quota,usedPercent:80},[75,90,100]);
+assert(result.threshold === null, 'startup silent');
+result = notificationTransition(result.state,{...quota,usedPercent:92},[75,90,100]);
+assert(result.threshold === 90, 'threshold crossing');
+assert(notificationTransition(result.state,{...quota,usedPercent:95},[75,90,100]).threshold === null, 'no duplicate');
+assert(notificationTransition(result.state,{...quota,resetsAt:2000018000,usedPercent:95},[75,90,100]).threshold === null, 'reset boundary initializes quietly');
+print('history checks passed');
